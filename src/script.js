@@ -2,12 +2,14 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import GUI from 'lil-gui';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
+import { RGBELoader } from 'three/examples/jsm/Addons.js';
 
 const canvas = document.querySelector('canvas.webgl');
 const gui = new GUI();
 const scene = new THREE.Scene();
 const gltfLoader = new GLTFLoader();
 const cubeTextureLoader = new THREE.CubeTextureLoader();
+const rgbeLoader = new RGBELoader();
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -19,18 +21,27 @@ scene.backgroundIntensity = 1;
 // scene.backgroundRotation.y = 1;
 // scene.environmentRotation.y = 1;
 
-//======= LDR (Low Dynamic Range) Cube Texture
-const environmentMap = cubeTextureLoader.load([
-  './environmentMaps/0/px.png',
-  './environmentMaps/0/nx.png',
-  './environmentMaps/0/py.png',
-  './environmentMaps/0/ny.png',
-  './environmentMaps/0/pz.png',
-  './environmentMaps/0/nz.png',
-]);
+//========== LDR (Low Dynamic Range) Cube Texture
+// const environmentMap = cubeTextureLoader.load([
+//   './environmentMaps/0/px.png',
+//   './environmentMaps/0/nx.png',
+//   './environmentMaps/0/py.png',
+//   './environmentMaps/0/ny.png',
+//   './environmentMaps/0/pz.png',
+//   './environmentMaps/0/nz.png',
+// ]);
 
-scene.environment = environmentMap;
-scene.background = environmentMap;
+// scene.environment = environmentMap;
+// scene.background = environmentMap;
+
+//========== HDR-High Dynamic Range (RGBE) Equirectangular
+rgbeLoader.load('./environmentMaps/0/2k.hdr', (environmentMap) => {
+  environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+  // console.log(environmentMap);
+
+  scene.background = environmentMap;
+  scene.environment = environmentMap;
+});
 
 //======= Debug GUI
 gui.add(scene, 'environmentIntensity').min(0).max(10).step(0.001);
@@ -47,7 +58,7 @@ gui
   .min(0)
   .max(10)
   .step(0.001)
-  .name('environmentRotation'); // Showcasing a Product 
+  .name('environmentRotation'); // Showcasing a Product
 
 //==================== Torus Knot ======================
 const torusKnot = new THREE.Mesh(
