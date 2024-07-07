@@ -21,7 +21,7 @@ let height = window.innerHeight;
 
 //================= Environment Map ====================
 scene.environmentIntensity = 1;
-scene.backgroundBlurriness = 0;
+// scene.backgroundBlurriness = 0;
 scene.backgroundIntensity = 1;
 // scene.backgroundRotation.y = 1;
 // scene.environmentRotation.y = 1;
@@ -116,7 +116,7 @@ cubeCamera.layers.set(1); // default is 0
 
 //========== Debug GUI
 gui.add(scene, 'environmentIntensity').min(0).max(10).step(0.001);
-gui.add(scene, 'backgroundBlurriness').min(0).max(1).step(0.001);
+// gui.add(scene, 'backgroundBlurriness').min(0).max(1).step(0.001);
 gui.add(scene, 'backgroundIntensity').min(0).max(10).step(0.001);
 gui
   .add(scene.backgroundRotation, 'y')
