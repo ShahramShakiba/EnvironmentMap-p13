@@ -103,27 +103,15 @@ Blender is often used in conjunction with three.js (a popular JavaScript library
 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Eyes.png" alt="Eyes" width="25" height="25" /> Feel free to delve into the code as it has been written in a straightforward manner for easy understanding.
 <br/> <br/> <br/> 
 
-
-> ### _Which Concepts Have I Covered_: <br/>
-
-01. _<h4></h4>_
-02. _<h4></h4>_
-03. _<h4></h4>_
-04. _<h4></h4>_
-05. _<h4></h4>_
-
-    
-<br/><br/>
-
 <!-------- try it live -------->
-#### _Give it a go in real-time and give me a Star_ &nbsp; <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Glowing%20Star.png" alt="Glowing Star" width="25"  /> <a href="" target="_blank"> &nbsp; _Environment Map_ </a> 
+#### _Give it a go in real-time and give me a Star_ &nbsp; <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Glowing%20Star.png" alt="Glowing Star" width="25"  /> <a href="https://environment-map-shahram.netlify.app/" target="_blank"> &nbsp; _Environment Map_ </a> 
 
 <br/>
 
 <!--------- Video --------->
-<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Clapper%20Board.webp" alt="Clapper Board" width="35" /> &nbsp; 
+<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Clapper%20Board.webp" alt="Clapper Board" width="35" /> &nbsp; Real time environment map rendering!
 
-
+https://github.com/ShahramShakiba/EnvironmentMap-p13/assets/110089830/aeb6efcf-c1fa-4f2d-a00c-c914d48aa423
 
   <br/> 
 
