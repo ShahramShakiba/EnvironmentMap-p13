@@ -68,18 +68,53 @@ scene.backgroundIntensity = 1;
 // scene.environment = environmentMap;
 
 //============ HDR-High Dynamic Range (RGBE) Equirectangular
-rgbeLoader.load('./environmentMaps/2/2k.hdr', (environmentMap) => {
-  environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+// rgbeLoader.load('./environmentMaps/2/2k.hdr', (environmentMap) => {
+//   environmentMap.mapping = THREE.EquirectangularReflectionMapping;
 
-  scene.environment = environmentMap;
+//   scene.environment = environmentMap;
 
-  const skybox = new GroundedSkybox(environmentMap, 15, 70);
-  // skybox.material.wireframe = true;
-  skybox.position.y = 15;
-  scene.add(skybox);
+//   const skybox = new GroundedSkybox(environmentMap, 15, 70);
+//   // skybox.material.wireframe = true;
+//   skybox.position.y = 15;
+//   scene.add(skybox);
+// });
+
+//============ Real time Environment Map ================
+const environmentMap = textureLoader.load(
+  './environmentMaps/blockadesLabsSkybox/interior_views_cozy_wood_cabin_with_cauldron_and_p.jpg'
+);
+environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+environmentMap.colorSpace = THREE.SRGBColorSpace;
+
+scene.background = environmentMap;
+
+const holyDonut = new THREE.Mesh(
+  new THREE.TorusGeometry(9, 0.7),
+  new THREE.MeshBasicMaterial({
+    color: new THREE.Color(10, 4, 2),
+  })
+);
+holyDonut.position.y = 3.5;
+holyDonut.layers.enable(1); // see the "holyDonut" 
+scene.add(holyDonut);
+
+//=========== Cube render target - cube texture - holyDonut creates light on the model - it's like cubeTextureLoader, loading 6 image for positive & negative x-y-z, doing 6 render on each frame - it's a lot in terms of performance
+
+const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(128, {
+  // type: THREE.FloatType, // uses 32 bits to store a wide range of values - to have the same behavior as an HDR
+
+  type: THREE.HalfFloatType, // uses only 16 bits - performance
 });
 
-//======= Debug GUI
+scene.environment = cubeRenderTarget.texture; // this texture is still empty we need to add a render - add a camera to render the light
+
+//=========== Cube Camera
+const cubeCamera = new THREE.CubeCamera(0.1, 100, cubeRenderTarget);
+
+cubeCamera.layers.set(1); // default is 0
+// layers: declare only for things that you can see in camera - cube camera only see the "holyDonut" and not rendering torus and the model
+
+//========== Debug GUI
 gui.add(scene, 'environmentIntensity').min(0).max(10).step(0.001);
 gui.add(scene, 'backgroundBlurriness').min(0).max(1).step(0.001);
 gui.add(scene, 'backgroundIntensity').min(0).max(10).step(0.001);
@@ -100,25 +135,26 @@ gui
 const torusKnot = new THREE.Mesh(
   new THREE.TorusKnotGeometry(1, 0.4, 100, 16),
   new THREE.MeshStandardMaterial({
-    roughness: 0.3,
+    roughness: 0,
     metalness: 1,
     color: 0xaaaaaa,
   })
 );
 torusKnot.position.y = 4;
-torusKnot.position.x = -5;
+torusKnot.position.x = -4;
 scene.add(torusKnot);
 
 //====================== Models ========================
 gltfLoader.load('./models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
   // console.log(gltf);
   gltf.scene.scale.set(10, 10, 10);
+  gltf.scene.position.x = 3;
   scene.add(gltf.scene);
 });
 
 //===================== Camera =========================
 const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100);
-camera.position.set(4, 5, 8);
+camera.position.set(8, 5, 14);
 scene.add(camera);
 
 //================ Orbit Controls ======================
@@ -148,8 +184,16 @@ window.addEventListener('resize', () => {
 
 //=================== Animate =======================
 const clock = new THREE.Clock();
+
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+
+  //======== Real time Environment Map
+  if (holyDonut) {
+    holyDonut.rotation.x = Math.sin(elapsedTime) * 2.1;
+
+    cubeCamera.update(renderer, scene);
+  }
 
   controls.update();
   renderer.render(scene, camera);
