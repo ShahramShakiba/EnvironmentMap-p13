@@ -13,9 +13,13 @@ let width = window.innerWidth;
 let height = window.innerHeight;
 
 //================= Environment Map ====================
+scene.environmentIntensity = 1;
+scene.backgroundBlurriness = 0;
+scene.backgroundIntensity = 1;
+// scene.backgroundRotation.y = 1;
+// scene.environmentRotation.y = 1;
 
-
-//===== LDR (Low Dynamic Range) Cube Texture
+//======= LDR (Low Dynamic Range) Cube Texture
 const environmentMap = cubeTextureLoader.load([
   './environmentMaps/0/px.png',
   './environmentMaps/0/nx.png',
@@ -27,6 +31,23 @@ const environmentMap = cubeTextureLoader.load([
 
 scene.environment = environmentMap;
 scene.background = environmentMap;
+
+//======= Debug GUI
+gui.add(scene, 'environmentIntensity').min(0).max(10).step(0.001);
+gui.add(scene, 'backgroundBlurriness').min(0).max(1).step(0.001);
+gui.add(scene, 'backgroundIntensity').min(0).max(10).step(0.001);
+gui
+  .add(scene.backgroundRotation, 'y')
+  .min(0)
+  .max(10)
+  .step(0.001)
+  .name('backgroundRotation');
+gui
+  .add(scene.environmentRotation, 'y')
+  .min(0)
+  .max(10)
+  .step(0.001)
+  .name('environmentRotation'); // Showcasing a Product 
 
 //==================== Torus Knot ======================
 const torusKnot = new THREE.Mesh(
