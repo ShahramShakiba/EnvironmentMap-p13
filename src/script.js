@@ -35,11 +35,11 @@ scene.backgroundIntensity = 1;
 // scene.background = environmentMap;
 
 //========== HDR-High Dynamic Range (RGBE) Equirectangular
-rgbeLoader.load('./environmentMaps/0/2k.hdr', (environmentMap) => {
+rgbeLoader.load('./environmentMaps/blender-2k.hdr', (environmentMap) => {
   environmentMap.mapping = THREE.EquirectangularReflectionMapping;
   // console.log(environmentMap);
 
-  scene.background = environmentMap;
+  // scene.background = environmentMap;
   scene.environment = environmentMap;
 });
 
