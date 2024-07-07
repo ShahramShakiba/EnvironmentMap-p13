@@ -1,6 +1,7 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import GUI from 'lil-gui';
 import * as THREE from 'three';
+import { EXRLoader } from 'three/examples/jsm/Addons.js';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
 
@@ -10,6 +11,7 @@ const scene = new THREE.Scene();
 const gltfLoader = new GLTFLoader();
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const rgbeLoader = new RGBELoader();
+const exrLoader = new EXRLoader();
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -21,7 +23,7 @@ scene.backgroundIntensity = 1;
 // scene.backgroundRotation.y = 1;
 // scene.environmentRotation.y = 1;
 
-//========== LDR (Low Dynamic Range) Cube Texture
+//============= LDR (Low Dynamic Range) Cube Texture
 // const environmentMap = cubeTextureLoader.load([
 //   './environmentMaps/0/px.png',
 //   './environmentMaps/0/nx.png',
@@ -34,12 +36,21 @@ scene.backgroundIntensity = 1;
 // scene.environment = environmentMap;
 // scene.background = environmentMap;
 
-//========== HDR-High Dynamic Range (RGBE) Equirectangular
-rgbeLoader.load('./environmentMaps/blender-2k.hdr', (environmentMap) => {
+//============ HDR-High Dynamic Range (RGBE) Equirectangular
+// rgbeLoader.load('./environmentMaps/blender-2k.hdr', (environmentMap) => {
+//   environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+//   // console.log(environmentMap);
+
+//   // scene.background = environmentMap;
+//   scene.environment = environmentMap;
+// });
+
+//============ HDR (EXR) Equirectangular
+exrLoader.load('./environmentMaps/nvidiaCanvas-4k.exr', (environmentMap) => {
   environmentMap.mapping = THREE.EquirectangularReflectionMapping;
   // console.log(environmentMap);
 
-  // scene.background = environmentMap;
+   scene.background = environmentMap;
   scene.environment = environmentMap;
 });
 
