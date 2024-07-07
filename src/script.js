@@ -12,6 +12,7 @@ const gltfLoader = new GLTFLoader();
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const rgbeLoader = new RGBELoader();
 const exrLoader = new EXRLoader();
+const textureLoader = new THREE.TextureLoader();
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -46,13 +47,23 @@ scene.backgroundIntensity = 1;
 // });
 
 //============ HDR (EXR) Equirectangular
-exrLoader.load('./environmentMaps/nvidiaCanvas-4k.exr', (environmentMap) => {
-  environmentMap.mapping = THREE.EquirectangularReflectionMapping;
-  // console.log(environmentMap);
+// exrLoader.load('./environmentMaps/nvidiaCanvas-4k.exr', (environmentMap) => {
+//   environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+//   // console.log(environmentMap);
 
-   scene.background = environmentMap;
-  scene.environment = environmentMap;
-});
+//    scene.background = environmentMap;
+//   scene.environment = environmentMap;
+// });
+
+//============ LDR Equirectangular
+const environmentMap = textureLoader.load(
+  './environmentMaps/blockadesLabsSkybox/interior_views_cozy_wood_cabin_with_cauldron_and_p.jpg'
+);
+environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+environmentMap.colorSpace = THREE.SRGBColorSpace;
+
+scene.background = environmentMap;
+scene.environment = environmentMap;
 
 //======= Debug GUI
 gui.add(scene, 'environmentIntensity').min(0).max(10).step(0.001);
