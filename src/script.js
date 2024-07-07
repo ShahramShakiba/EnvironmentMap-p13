@@ -4,10 +4,12 @@ import * as THREE from 'three';
 import { EXRLoader } from 'three/examples/jsm/Addons.js';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
+import { GroundedSkybox } from 'three/examples/jsm/Addons.js';
 
 const canvas = document.querySelector('canvas.webgl');
 const gui = new GUI();
 const scene = new THREE.Scene();
+
 const gltfLoader = new GLTFLoader();
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const rgbeLoader = new RGBELoader();
@@ -55,15 +57,27 @@ scene.backgroundIntensity = 1;
 //   scene.environment = environmentMap;
 // });
 
-//============ LDR Equirectangular
-const environmentMap = textureLoader.load(
-  './environmentMaps/blockadesLabsSkybox/interior_views_cozy_wood_cabin_with_cauldron_and_p.jpg'
-);
-environmentMap.mapping = THREE.EquirectangularReflectionMapping;
-environmentMap.colorSpace = THREE.SRGBColorSpace;
+//============ LDR Equirectangular - Skybox AI
+// const environmentMap = textureLoader.load(
+//   './environmentMaps/blockadesLabsSkybox/interior_views_cozy_wood_cabin_with_cauldron_and_p.jpg'
+// );
+// environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+// environmentMap.colorSpace = THREE.SRGBColorSpace;
 
-scene.background = environmentMap;
-scene.environment = environmentMap;
+// scene.background = environmentMap;
+// scene.environment = environmentMap;
+
+//============ HDR-High Dynamic Range (RGBE) Equirectangular
+rgbeLoader.load('./environmentMaps/2/2k.hdr', (environmentMap) => {
+  environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+
+  scene.environment = environmentMap;
+
+  const skybox = new GroundedSkybox(environmentMap, 15, 70);
+  // skybox.material.wireframe = true;
+  skybox.position.y = 15;
+  scene.add(skybox);
+});
 
 //======= Debug GUI
 gui.add(scene, 'environmentIntensity').min(0).max(10).step(0.001);
